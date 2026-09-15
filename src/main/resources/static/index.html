@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WingBook · Media Wing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Fraunces:opsz,wght@9..144,600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #14201b;
+      --muted: #4d6358;
+      --paper: #f3efe6;
+      --card: #fffdf8;
+      --line: #d7cfc0;
+      --accent: #0f6b5c;
+      --accent-soft: #d8efe9;
+      --warn: #8a4b1f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "DM Sans", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, #e7f3ef 0, transparent 42%),
+        linear-gradient(180deg, #f7f3ea 0%, var(--paper) 100%);
+      min-height: 100vh;
+    }
+    header {
+      padding: 2.4rem 1.5rem 1.2rem;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .eyebrow {
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 700;
+      margin: 0 0 0.5rem;
+    }
+    h1 {
+      font-family: Fraunces, Georgia, serif;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      margin: 0 0 0.4rem;
+      line-height: 1.1;
+    }
+    .sub {
+      color: var(--muted);
+      max-width: 42rem;
+      margin: 0;
+      line-height: 1.5;
+    }
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 1.5rem 3rem;
+      display: grid;
+      gap: 1.5rem;
+    }
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 1.2rem 1.3rem 1.4rem;
+      box-shadow: 0 10px 30px rgba(20, 32, 27, 0.04);
+    }
+    .panel h2 {
+      margin: 0 0 1rem;
+      font-size: 1.05rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.9rem;
+    }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 0.95rem 1rem;
+      background: linear-gradient(180deg, #fff 0%, #faf7f1 100%);
+    }
+    .tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      margin-bottom: 0.55rem;
+    }
+    .card h3 {
+      margin: 0 0 0.25rem;
+      font-size: 1rem;
+    }
+    .meta {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: end;
+      margin-bottom: 1rem;
+    }
+    label {
+      display: grid;
+      gap: 0.25rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    input, select, button {
+      font: inherit;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.7rem;
+      background: #fff;
+      color: var(--ink);
+    }
+    button {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button.secondary {
+      background: #fff;
+      color: var(--ink);
+    }
+    #status {
+      min-height: 1.2rem;
+      font-size: 0.9rem;
+      color: var(--warn);
+      margin-top: 0.6rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.55rem 0.35rem;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th { color: var(--muted); font-weight: 600; font-size: 0.8rem; }
+    .empty { color: var(--muted); font-size: 0.92rem; }
+    footer {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 1.5rem 2rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p class="eyebrow">Gisma · M604 WingBook</p>
+    <h1>Media Wing pod holds</h1>
+    <p class="sub">
+      Live view of pods, members, and short slot holds. Max 90 minutes, quiet hours blocked,
+      one active hold per member.
+    </p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>Pods</h2>
+      <div id="pods" class="grid"><p class="empty">Loading…</p></div>
+    </section>
+
+    <section class="panel">
+      <h2>Members</h2>
+      <div id="members" class="grid"><p class="empty">Loading…</p></div>
+    </section>
+
+    <section class="panel">
+      <h2>Hold a slot</h2>
+      <div class="toolbar">
+        <label>Pod
+          <select id="podId"></select>
+        </label>
+        <label>Member
+          <select id="memberId"></select>
+        </label>
+        <label>Begins
+          <input id="beginsAt" type="datetime-local" />
+        </label>
+        <label>Ends
+          <input id="endsAt" type="datetime-local" />
+        </label>
+        <label>Intent
+          <input id="intent" type="text" value="Capstone writing sprint" />
+        </label>
+        <button id="holdBtn" type="button">Create hold</button>
+        <button id="refreshBtn" class="secondary" type="button">Refresh</button>
+      </div>
+      <div id="status"></div>
+      <div id="slots"><p class="empty">No holds yet.</p></div>
+    </section>
+  </main>
+
+  <footer>Shivam · GH1061529 · API also at /api/v1/pods · /api/v1/members · /api/v1/slots</footer>
+
+  <script>
+    const statusEl = document.getElementById("status");
+
+    function pad(n) { return String(n).padStart(2, "0"); }
+    function toLocalInput(d) {
+      return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+    function toApiDate(value) {
+      return value.length === 16 ? value + ":00" : value;
+    }
+
+    function setDefaultTimes() {
+      const start = new Date();
+      start.setDate(start.getDate() + 2);
+      start.setHours(14, 0, 0, 0);
+      const end = new Date(start);
+      end.setHours(15, 0, 0, 0);
+      document.getElementById("beginsAt").value = toLocalInput(start);
+      document.getElementById("endsAt").value = toLocalInput(end);
+    }
+
+    async function loadPods() {
+      const pods = await fetch("/api/v1/pods").then(r => r.json());
+      const box = document.getElementById("pods");
+      const select = document.getElementById("podId");
+      box.innerHTML = "";
+      select.innerHTML = "";
+      pods.forEach(p => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="tag">${p.kind}</div>
+          <h3>${p.label}</h3>
+          <div class="meta"><strong>${p.tag}</strong><br>${p.wingZone}<br>${p.seats} seat(s)</div>`;
+        box.appendChild(card);
+        const opt = document.createElement("option");
+        opt.value = p.id;
+        opt.textContent = `${p.tag} · ${p.label}`;
+        select.appendChild(opt);
+      });
+    }
+
+    async function loadMembers() {
+      const members = await fetch("/api/v1/members").then(r => r.json());
+      const box = document.getElementById("members");
+      const select = document.getElementById("memberId");
+      box.innerHTML = "";
+      select.innerHTML = "";
+      members.forEach(m => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="tag">${m.programme}</div>
+          <h3>${m.displayName}</h3>
+          <div class="meta">${m.campusId}<br>${m.mail}</div>`;
+        box.appendChild(card);
+        const opt = document.createElement("option");
+        opt.value = m.id;
+        opt.textContent = `${m.displayName} (${m.campusId})`;
+        select.appendChild(opt);
+      });
+    }
+
+    async function loadSlots() {
+      const slots = await fetch("/api/v1/slots").then(r => r.json());
+      const box = document.getElementById("slots");
+      if (!slots.length) {
+        box.innerHTML = `<p class="empty">No holds yet.</p>`;
+        return;
+      }
+      box.innerHTML = `
+        <table>
+          <thead>
+            <tr><th>Pod</th><th>Member</th><th>Window</th><th>PIN</th><th>Status</th><th></th></tr>
+          </thead>
+          <tbody>
+            ${slots.map(s => `
+              <tr>
+                <td>${s.podTag}</td>
+                <td>${s.campusId}</td>
+                <td>${s.beginsAt.replace("T", " ")} → ${s.endsAt.replace("T", " ")}</td>
+                <td>${s.doorPin}</td>
+                <td>${s.status}</td>
+                <td>${s.status === "HELD"
+                  ? `<button data-release="${s.id}" class="secondary" type="button">Release</button>`
+                  : ""}</td>
+              </tr>`).join("")}
+          </tbody>
+        </table>`;
+      box.querySelectorAll("[data-release]").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          statusEl.textContent = "";
+          const res = await fetch(`/api/v1/slots/${btn.dataset.release}/release`, { method: "POST" });
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            statusEl.textContent = err.message || "Release failed";
+          }
+          await loadSlots();
+        });
+      });
+    }
+
+    async function createHold() {
+      statusEl.textContent = "";
+      const body = {
+        podId: Number(document.getElementById("podId").value),
+        memberId: Number(document.getElementById("memberId").value),
+        beginsAt: toApiDate(document.getElementById("beginsAt").value),
+        endsAt: toApiDate(document.getElementById("endsAt").value),
+        intent: document.getElementById("intent").value
+      };
+      const res = await fetch("/api/v1/slots", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        statusEl.textContent = err.message || "Could not create hold";
+        return;
+      }
+      const created = await res.json();
+      statusEl.textContent = `Hold created. Door PIN: ${created.doorPin}`;
+      await loadSlots();
+    }
+
+    async function boot() {
+      setDefaultTimes();
+      await Promise.all([loadPods(), loadMembers(), loadSlots()]);
+    }
+
+    document.getElementById("holdBtn").addEventListener("click", createHold);
+    document.getElementById("refreshBtn").addEventListener("click", boot);
+    boot().catch(err => {
+      statusEl.textContent = "Could not reach API. Is the app running on port 8088?";
+      console.error(err);
+    });
+  </script>
+</body>
+</html>

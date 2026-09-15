@@ -1,0 +1,20 @@
+### WingBook samples (port 8088)
+@base = http://localhost:8088
+
+GET {{base}}/api/v1/pods
+GET {{base}}/api/v1/members
+
+POST {{base}}/api/v1/slots
+Content-Type: application/json
+
+{
+  "podId": 1,
+  "memberId": 1,
+  "beginsAt": "2026-09-22T14:00:00",
+  "endsAt": "2026-09-22T15:00:00",
+  "intent": "Capstone writing sprint"
+}
+
+GET {{base}}/api/v1/slots/free?podId=1&beginsAt=2026-09-22T14:00:00&endsAt=2026-09-22T15:00:00
+
+POST {{base}}/api/v1/slots/1/release
